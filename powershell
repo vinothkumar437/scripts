@@ -1,0 +1,18 @@
+https://stackoverflow.com/questions/17072919/powershell-sqlcmd-using-result-values-without-defining-variables
+
+Works
+
+$Result = Invoke-Sqlcmd -query "SELECT Id, FirstName, LastName FROM Person" 
+foreach($item in $Result){
+  $ID= $item.Id 
+  $SaleResults = Invoke-Sqlcmd -query "SELECT * FROM Sales WHERE Salesperson = $ID"
+}
+
+Does NOT Work:
+
+foreach($item in $Result){
+  $SaleResults = Invoke-Sqlcmd -query "SELECT * FROM Sales WHERE Salesperson=$Item.Id"
+}
+
+You need to use $($Item.ID) in your double-quoted string, and it will work.
+
